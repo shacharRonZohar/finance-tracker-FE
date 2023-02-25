@@ -22,7 +22,7 @@ async function login(username: string, password: string) {
 
 async function logout() {
   try {
-    await httpService.post('logout')
+    await httpService.post('auth/logout')
   } catch (err) {
     console.log('Error when trying to logout:', err)
     throw err
@@ -31,7 +31,7 @@ async function logout() {
 
 async function register(username: string, password: string, email: string) {
   try {
-    const user = await httpService.post<AuthResponse>('register', { username, password, email })
+    const user = await httpService.post<AuthResponse>('auth/register', { username, password, email })
     if (!user) throw new Error('Register failed.')
     return user
   } catch (err) {

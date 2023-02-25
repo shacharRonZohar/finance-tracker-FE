@@ -3,6 +3,7 @@ import { storageService } from './util/async-storage.service'
 import { authService } from './auth.service'
 
 import type { MonthData, Item, NewItem } from '@/models/financial'
+import { httpService } from './util/http.service'
 
 export const financialService = {
   getMonthlyData,
@@ -17,10 +18,13 @@ function _query() {
   return storageService.query<MonthData>(DB_KEY)
 }
 
-async function getMonthlyData(searchMonth: number) {
-  const financials = await _query()
-  const { _id } = await authService.getLoggedInUser()
-  const data = financials.find(({ userId, month }) => userId === _id && month === searchMonth)
+async function getMonthlyData({ year, month }: { year: number; month: number }) {
+  // const financials = await _query()
+  // const { _id } = await authService.getLoggedInUser()
+  // const data = financials.find(({ userId, month }) => userId === _id && month === searchMonth)
+  // const data = await storageService.get<MonthData>(DB_KEY, searchBy)
+  console.log('getMonthlyData', year, month)
+  const data = httpService.get<MonthData>(`monthData/${year}`, { month })
   if (!data) throw new Error('No month data found')
   return data
 }
@@ -53,8 +57,7 @@ async function _createDemoData() {
 function _getDemoData(): MonthData[] {
   return [
     {
-      _id: '1',
-      userId: '63fa32804e5ce2b8baa62274',
+      id: '1',
       month: 1,
       budget: 1000,
       expneses: {
@@ -69,8 +72,7 @@ function _getDemoData(): MonthData[] {
       }
     },
     {
-      _id: '2',
-      userId: '63fa32804e5ce2b8baa62274',
+      id: '2',
       month: 2,
       budget: 1500,
       expneses: {

@@ -7,8 +7,7 @@ export interface Item {
 export type NewItem = Omit<Item, 'id'>
 
 export interface MonthData {
-  _id: string
-  userId: string
+  id: string
   month: number
   budget: number
   expneses: {
