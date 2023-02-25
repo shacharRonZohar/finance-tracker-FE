@@ -31,7 +31,7 @@ async function getMonthlyData({ year, month }: { year: number; month: number }) 
 
 async function addItem(item: NewItem, searchMonth: number, isRecurring: boolean) {
   const newItem = { id: Date.now().toString(), ...item }
-  const monthData = await getMonthlyData(searchMonth)
+  // const monthData = await getMonthlyData(searchMonth)
   console.log(monthData)
   const {
     expneses: { recurring, nonRecurring }

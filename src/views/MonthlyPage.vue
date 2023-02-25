@@ -3,7 +3,14 @@
     <!-- <ChangeYear></ChangeYear> -->
     <div v-if="isGettingMonthly">Loading...</div>
     <div v-else-if="monthlyError">Had an error: {{ monthlyError }}</div>
-    <MonthlyOverview v-else-if="monthly" :monthData="monthly" @add-item="onAddItem"></MonthlyOverview>
+    <MonthlyOverview
+      v-else-if="monthly"
+      :year="year"
+      :monthData="monthly"
+      @add-item="onAddItem"
+      @update-year="onUpdateYear"
+      @update-budget="onUpdateBudget"
+    />
   </main>
 </template>
 
@@ -18,8 +25,9 @@ import type { User } from '@/models/user'
 
 const router = useRouter()
 
-const year = ref(2021)
-const searchMonth = ref(1)
+const today = new Date()
+const year = ref(today.getFullYear())
+const searchMonth = ref(today.getMonth())
 const { monthly, error: monthlyError, isGettingMonthly } = useGetMonthly({ year, searchMonth })
 const { addItem, isAddingItem } = useAddItem()
 
@@ -28,6 +36,15 @@ provide('isAddingItem', isAddingItem)
 
 const onSwitchMonth = (month: number) => {
   searchMonth.value = month
+}
+
+const onUpdateBudget = (newTotal: number) => {
+  console.log('new total', newTotal)
+}
+
+const onUpdateYear = (newYear: number) => {
+  console.log('new year', newYear)
+  year.value = newYear
 }
 
 const onAddItem = (newItem: NewItem) => {
