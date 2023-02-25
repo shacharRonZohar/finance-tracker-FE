@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, inject, type Ref } from 'vue'
+import { ref, inject, type Ref } from 'vue'
 import type { NewItem } from '@/models/financial'
 
 const emit = defineEmits<{

@@ -6,12 +6,12 @@ export const authService = {
   login,
   logout,
   register,
-  getLoggedInUser: getCurrentUser
+  getLoggedInUser
 }
 
 async function login(username: string, password: string) {
   try {
-    const { user } = await httpService.post<AuthResponse>('login', { username, password })
+    const user = await httpService.post<AuthResponse>('auth/login', { username, password })
     if (!user) throw new Error('Login failed.')
     return user
   } catch (err) {
@@ -31,7 +31,7 @@ async function logout() {
 
 async function register(username: string, password: string, email: string) {
   try {
-    const { user } = await httpService.post<AuthResponse>('register', { username, password, email })
+    const user = await httpService.post<AuthResponse>('register', { username, password, email })
     if (!user) throw new Error('Register failed.')
     return user
   } catch (err) {
@@ -40,10 +40,11 @@ async function register(username: string, password: string, email: string) {
   }
 }
 
-async function getCurrentUser() {
-  return { _id: '1', username: 'demo', email: 'demo@demo.com' }
+async function getLoggedInUser() {
+  // return { _id: '1', username: 'demo', email: 'demo@demo.com' }
   try {
-    const { user } = await httpService.get<AuthResponse>('getCurrentUser')
+    const user = await httpService.get<AuthResponse>('auth/logged-in-user')
+    console.log(user)
     return user
   } catch (err) {
     console.log('Error when trying to get current user:', err)

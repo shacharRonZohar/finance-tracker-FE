@@ -8,7 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import type { Item } from '@/models/financial'
 
 const props = defineProps<{
