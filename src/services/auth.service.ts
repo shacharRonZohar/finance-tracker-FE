@@ -5,7 +5,7 @@ import type { AuthResponse } from '@/models/http'
 export const authService = {
   login,
   logout,
-  register,
+  signup: signup,
   getLoggedInUser
 }
 
@@ -29,13 +29,13 @@ async function logout() {
   }
 }
 
-async function register(username: string, password: string, email: string) {
+async function signup(username: string, password: string) {
   try {
-    const user = await httpService.post<AuthResponse>('auth/register', { username, password, email })
-    if (!user) throw new Error('Register failed.')
+    const user = await httpService.post<AuthResponse>('auth/signup', { username, password })
+    if (!user) throw new Error('signup failed.')
     return user
   } catch (err) {
-    console.log('Error when trying to register:', err)
+    console.log('Error when trying to signup:', err)
     throw err
   }
 }

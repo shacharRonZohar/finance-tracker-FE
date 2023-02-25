@@ -40,7 +40,7 @@ const onAddItem = (newItem: NewItem) => {
 
 onMounted(() => {
   if (!user?.value) {
-    router.push('/login')
+    router.push('/auth')
   }
 })
 </script>

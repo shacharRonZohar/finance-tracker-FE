@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed } from 'vue'
+import { computed } from 'vue'
 import ItemList from '@/components/ItemList.vue'
 import AddItem from '@/components/AddItem.vue'
 import type { NewItem, MonthData } from '@/models/financial'

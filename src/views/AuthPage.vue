@@ -1,5 +1,8 @@
 <template>
-  <form @submit.prevent="onLogin">
+  <div v-if="user">
+    <button @click="onLogout">Log Out</button>
+  </div>
+  <form v-else @submit.prevent="onSubmit">
     <div class="form-group">
       <label for="username">Username</label>
       <input v-model="userCreds.username" type="text" class="form-control" id="username" placeholder="Enter username" />
@@ -14,28 +17,38 @@
 
 <script setup lang="ts">
 import { ref, inject, type Ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 // import { useQuery } from 'vue-query'
 import { useLogin } from '@/composables/useQuery/mutations/useLogin'
-import { useRouter } from 'vue-router'
+import { useSignup } from '@/composables/useQuery/mutations/useSignup'
+import { useLogout } from '@/composables/useQuery/mutations/useLogout'
 import type { User } from '@/models/user'
 
-const user = inject<Ref<User>>('user')
+const user = inject<Ref<User | null>>('user') as Ref<User | null>
+const route = useRoute()
 const router = useRouter()
 const { login } = useLogin()
+const { signup } = useSignup()
+const { logout } = useLogout()
 
 const userCreds = ref({
   username: '',
   password: ''
 })
 
-const onLogin = async () => {
+const onSubmit = async () => {
   if (!userCreds.value.username.trim() || !userCreds.value.password.trim()) {
     return
   }
-  if (!user) {
-    return
-  }
-  user.value = await login(userCreds.value)
+  const func = route.fullPath.toLowerCase().includes('signup') ? signup : login
+  // console.log(await func(userCreds.value))
+  user.value = await func(userCreds.value)
   router.push('/monthly')
+}
+
+const onLogout = () => {
+  logout()
+  user.value = null
+  // router.push('/')
 }
 </script>
